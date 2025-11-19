@@ -1,5 +1,8 @@
+HEAD
 # extrator-audio-youtube
 Extrator de Áudio
+
+
 # 🎵 Extrator de Áudio YouTube
 
 Aplicação para extrair áudio de vídeos e playlists do YouTube, com suporte a:
@@ -23,4 +26,9 @@ Aplicação para extrair áudio de vídeos e playlists do YouTube, com suporte a
 ### Clonar repositório
 ```bash
 git clone https://github.com/seu-usuario/extrator-audio-youtube.git
+
+HEAD
 cd extrator-audio-youtube
+
+cd extrator-audio-youtube
+2d7f2ba (Commit inicial)

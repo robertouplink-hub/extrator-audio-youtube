@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Extrator de Áudio YouTube</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    h1 { color: #4caf50; }
+    input, select, button { margin: 5px 0; padding: 8px; width: 100%; }
+    #progress { width: 100%; background: #ddd; margin-top: 15px; }
+    #bar { height: 20px; background: #4caf50; width: 0%; transition: width 0.5s; }
+    #msg { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🎵 Extrator de Áudio YouTube</h1>
+
+  <label>URL do vídeo ou playlist:</label>
+  <input type="text" id="url" placeholder="Cole aqui a URL do YouTube">
+
+  <label>Bitrate:</label>
+  <select id="bitrate">
+    <option value="128k">128 kbps</option>
+    <option value="192k">192 kbps</option>
+    <option value="256k" selected>256 kbps</option>
+    <option value="320k">320 kbps</option>
+  </select>
+
+  <label>Timestamps (opcional):</label>
+  <textarea id="timestamps" rows="4" placeholder="00:00 Nome da faixa"></textarea>
+
+  <button onclick="criarTarefa()">Iniciar</button>
+
+  <div id="progress">
+    <div id="bar"></div>
+  </div>
+  <p id="msg"></p>
+
+  <script>
+    let tarefaId = null;
+    let interval = null;
+
+    async function criarTarefa() {
+      const url = document.getElementById("url").value;
+      const bitrate = document.getElementById("bitrate").value;
+      const timestamps = document.getElementById("timestamps").value;
+
+      const resp = await fetch("/videos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, bitrate, textoTimestamps: timestamps })
+      });
+      const task = await resp.json();
+      tarefaId = task.id;
+      document.getElementById("msg").textContent = "Tarefa criada. Acompanhe o progresso...";
+      interval = setInterval(atualizarProgresso, 2000);
+    }
+
+    async function atualizarProgresso() {
+      const resp = await fetch(`/videos/status/${tarefaId}`);
+      const task = await resp.json();
+
+      const pct = Math.round((task.completedSteps / task.totalSteps) * 100) || 0;
+      document.getElementById("bar").style.width = pct + "%";
+      document.getElementById("msg").textContent = task.progressMsg || task.status;
+
+      if (task.status === "CONCLUIDO") {
+        clearInterval(interval);
+        if (task.resultFiles?.length) {
+          const a = document.createElement("a");
+          a.href = `/${task.resultFiles[0]}`;
+          a.download = "";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          document.getElementById("msg").textContent = "Download concluído!";
+        }
+      } else if (task.status === "ERRO") {
+        clearInterval(interval);
+        document.getElementById("msg").textContent = "Erro: " + task.progressMsg;
+      }
+    }
+  </script>
+</body>
+</html>
