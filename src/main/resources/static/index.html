@@ -6,7 +6,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 40px; }
     h1 { color: #4caf50; }
-    input, select, button { margin: 5px 0; padding: 8px; width: 100%; }
+    input, select, button, textarea { margin: 5px 0; padding: 8px; width: 100%; box-sizing: border-box; }
     #progress { width: 100%; background: #ddd; margin-top: 15px; }
     #bar { height: 20px; background: #4caf50; width: 0%; transition: width 0.5s; }
     #msg { margin-top: 10px; font-weight: bold; }
@@ -41,43 +41,75 @@
     let interval = null;
 
     async function criarTarefa() {
-      const url = document.getElementById("url").value;
+      const url = document.getElementById("url").value?.trim();
       const bitrate = document.getElementById("bitrate").value;
       const timestamps = document.getElementById("timestamps").value;
 
-      const resp = await fetch("/videos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, bitrate, textoTimestamps: timestamps })
-      });
-      const task = await resp.json();
-      tarefaId = task.id;
-      document.getElementById("msg").textContent = "Tarefa criada. Acompanhe o progresso...";
-      interval = setInterval(atualizarProgresso, 2000);
+      if (!url || !/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)/.test(url)) {
+        document.getElementById("msg").textContent = "Informe uma URL válida do YouTube.";
+        return;
+      }
+
+      try {
+        const resp = await fetch("/videos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, bitrate, textoTimestamps: timestamps })
+        });
+
+        if (!resp.ok) {
+          const txt = await resp.text();
+          document.getElementById("msg").textContent = "Erro ao criar tarefa: " + (txt || resp.status);
+          return;
+        }
+
+        const task = await resp.json();
+
+        if (!task || typeof task.id !== "number") {
+          document.getElementById("msg").textContent = "Falha: não recebi um ID de tarefa válido.";
+          return;
+        }
+
+        tarefaId = task.id;
+        document.getElementById("msg").textContent = "Tarefa criada. Acompanhe o progresso...";
+
+        if (interval) clearInterval(interval);
+        interval = setInterval(atualizarProgresso, 2000);
+
+      } catch (e) {
+        document.getElementById("msg").textContent = "Falha de rede: " + e.message;
+      }
     }
 
     async function atualizarProgresso() {
-      const resp = await fetch(`/videos/status/${tarefaId}`);
-      const task = await resp.json();
+      if (typeof tarefaId !== "number" || !Number.isFinite(tarefaId)) return;
 
-      const pct = Math.round((task.completedSteps / task.totalSteps) * 100) || 0;
-      document.getElementById("bar").style.width = pct + "%";
-      document.getElementById("msg").textContent = task.progressMsg || task.status;
+      try {
+        const resp = await fetch(`/videos/status/${tarefaId}`);
+        if (!resp.ok) return;
 
-      if (task.status === "CONCLUIDO") {
-        clearInterval(interval);
-        if (task.resultFiles?.length) {
-          const a = document.createElement("a");
-          a.href = `/${task.resultFiles[0]}`;
-          a.download = "";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          document.getElementById("msg").textContent = "Download concluído!";
+        const task = await resp.json();
+        const pct = Math.round((task.completedSteps / task.totalSteps) * 100) || 0;
+        document.getElementById("bar").style.width = pct + "%";
+        document.getElementById("msg").textContent = task.progressMsg || task.status || "";
+
+        if (task.status === "CONCLUIDO") {
+          clearInterval(interval);
+          if (task.resultFiles?.length) {
+            const a = document.createElement("a");
+            a.href = `/${task.resultFiles[0]}`;
+            a.download = "";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            document.getElementById("msg").textContent = "Download concluído!";
+          }
+        } else if (task.status === "ERRO") {
+          clearInterval(interval);
+          document.getElementById("msg").textContent = "Erro: " + (task.progressMsg || "Falha na tarefa");
         }
-      } else if (task.status === "ERRO") {
-        clearInterval(interval);
-        document.getElementById("msg").textContent = "Erro: " + task.progressMsg;
+      } catch {
+        // Silencia erros transitórios
       }
     }
   </script>

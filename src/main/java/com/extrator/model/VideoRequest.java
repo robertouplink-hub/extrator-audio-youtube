@@ -1,14 +1,23 @@
 package com.extrator.model;
 
-import java.util.List;
-
 public class VideoRequest {
+
     private String url;
-    private List<String> timestamps;      // lista simples de intervalos (ex: "00:00-03:15")
-    private String textoTimestamps;       // texto bruto com tempos e títulos
-    private String bitrate = "256k";      // taxa de compressão MP3 (default 256k)
+    private String bitrate;
+    private String textoTimestamps;
+
+    public VideoRequest() {
+        // Construtor padrão necessário para desserialização JSON
+    }
+
+    public VideoRequest(String url, String bitrate, String textoTimestamps) {
+        this.url = url;
+        this.bitrate = bitrate;
+        this.textoTimestamps = textoTimestamps;
+    }
 
     // Getters e Setters
+
     public String getUrl() {
         return url;
     }
@@ -17,12 +26,12 @@ public class VideoRequest {
         this.url = url;
     }
 
-    public List<String> getTimestamps() {
-        return timestamps;
+    public String getBitrate() {
+        return bitrate;
     }
 
-    public void setTimestamps(List<String> timestamps) {
-        this.timestamps = timestamps;
+    public void setBitrate(String bitrate) {
+        this.bitrate = bitrate;
     }
 
     public String getTextoTimestamps() {
@@ -31,13 +40,5 @@ public class VideoRequest {
 
     public void setTextoTimestamps(String textoTimestamps) {
         this.textoTimestamps = textoTimestamps;
-    }
-
-    public String getBitrate() {
-        return bitrate;
-    }
-
-    public void setBitrate(String bitrate) {
-        this.bitrate = bitrate;
     }
 }

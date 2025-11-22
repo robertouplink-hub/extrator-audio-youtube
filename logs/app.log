@@ -1,0 +1,38 @@
+2025-11-21 20:36:09 [main] INFO  com.extrator.ExtratorApplication - Starting ExtratorApplication using Java 21.0.8 with PID 4448 (/home/lockadm/extrator/target/classes started by lockadm in /home/lockadm/extrator)
+2025-11-21 20:36:09 [main] INFO  com.extrator.ExtratorApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-21 20:36:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-21 20:36:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 44 ms. Found 0 JPA repository interfaces.
+2025-11-21 20:36:13 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-11-21 20:36:13 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-0.0.0.0-8080"]
+2025-11-21 20:36:13 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-21 20:36:13 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-11-21 20:36:14 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-21 20:36:14 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4794 ms
+2025-11-21 20:36:14 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-21 20:36:15 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-11-21 20:36:15 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-21 20:36:16 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-21 20:36:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-21 20:36:16 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:extratordb user=SA
+2025-11-21 20:36:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-21 20:36:17 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-21 20:36:17 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-21 20:36:17 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-21 20:36:18 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-21 20:36:18 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-11-21 20:36:18 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-0.0.0.0-8080"]
+2025-11-21 20:36:18 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-11-21 20:36:18 [main] INFO  com.extrator.ExtratorApplication - Started ExtratorApplication in 11.891 seconds (process running for 12.902)
+2025-11-21 20:36:43 [http-nio-0.0.0.0-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-21 20:36:43 [http-nio-0.0.0.0-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-21 20:36:43 [http-nio-0.0.0.0-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-11-21 20:41:54 [pool-2-thread-1] INFO  com.extrator.service.VideoService - Tarefa 1 concluída com sucesso
+2025-11-21 20:46:48 [pool-2-thread-2] INFO  com.extrator.service.VideoService - Tarefa 2 concluída com sucesso
+2025-11-21 20:56:46 [pool-2-thread-1] INFO  com.extrator.service.VideoService - Tarefa 3 concluída com sucesso
